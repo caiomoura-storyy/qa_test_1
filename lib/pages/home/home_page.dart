@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 
-import '../../app/service/auth_service.dart';
+import '../../components/main_app_bar.dart';
 import '../../theme/app_theme.dart';
 
 class HomePage extends StatelessWidget {
@@ -12,7 +12,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const _HomeAppBar(displayName: _displayName),
+      appBar: const MainAppBar(displayName: _displayName),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 40),
         child: Center(
@@ -47,119 +47,17 @@ class HomePage extends StatelessWidget {
   }
 }
 
-class _HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const _HomeAppBar({required this.displayName});
-
-  final String displayName;
-
-  @override
-  Size get preferredSize => const Size.fromHeight(72);
-
-  @override
-  Widget build(BuildContext context) {
-    return AppBar(
-      backgroundColor: Colors.white,
-      surfaceTintColor: Colors.white,
-      elevation: 0,
-      scrolledUnderElevation: 1,
-      toolbarHeight: 72,
-      automaticallyImplyLeading: false,
-      centerTitle: false,
-      titleSpacing: 24,
-      title: SvgPicture.asset(
-        'assets/svg/storyy|magic_admin.svg',
-        height: 36.0,
-        semanticsLabel: 'magic admin',
-      ),
-      actions: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: _UserAvatarMenu(displayName: displayName),
-        ),
-      ],
-      shape: const Border(
-        bottom: BorderSide(color: AppTheme.divider, width: 1),
-      ),
-    );
-  }
-}
-
-class _UserAvatarMenu extends StatelessWidget {
-  const _UserAvatarMenu({required this.displayName});
-
-  final String displayName;
-
-  String get _initials =>
-      displayName.isEmpty ? '?' : displayName[0].toUpperCase();
-
-  @override
-  Widget build(BuildContext context) {
-    return MenuAnchor(
-      alignmentOffset: const Offset(0, 8),
-      style: MenuStyle(
-        shape: WidgetStatePropertyAll(
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-        ),
-      ),
-      menuChildren: [
-        MenuItemButton(
-          leadingIcon: const Icon(
-            Icons.logout,
-            size: 18,
-            color: AppTheme.mutedText,
-          ),
-          onPressed: () => AuthService.instance.logout(),
-          child: const Text('Logout'),
-        ),
-      ],
-      builder: (context, controller, _) {
-        return Tooltip(
-          message: displayName,
-          child: Material(
-            color: AppTheme.iconBg,
-            shape: const CircleBorder(),
-            clipBehavior: Clip.antiAlias,
-            child: InkWell(
-              customBorder: const CircleBorder(),
-              hoverColor: Colors.black.withValues(alpha: 0.06),
-              onTap: () {
-                if (controller.isOpen) {
-                  controller.close();
-                } else {
-                  controller.open();
-                }
-              },
-              child: SizedBox(
-                width: 36,
-                height: 36,
-                child: Center(
-                  child: Text(
-                    _initials,
-                    style: const TextStyle(
-                      color: AppTheme.mutedText,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-}
-
 class _HomeMenuCard extends StatelessWidget {
   const _HomeMenuCard();
 
   static const _entries = <_MenuEntry>[
     _MenuEntry(icon: Icons.manage_accounts_outlined, title: 'My Account'),
-    // _MenuEntry(
-    //   icon: Icons.hub_outlined,
-    //   title: 'My Pod',
-    //   subtitle: 'Submitted projects and fulfillment tickets.',
-    // ),
+    _MenuEntry(
+      icon: Icons.hub_outlined,
+      title: 'My Pod',
+      subtitle: 'Submitted projects and fulfillment tickets.',
+      route: '/my-pod',
+    ),
     // _MenuEntry(
     //   icon: Icons.folder_outlined,
     //   title: 'Projects',
@@ -223,16 +121,17 @@ class _MenuEntry {
   const _MenuEntry({
     required this.icon,
     required this.title,
-    // ignore: unused_element_parameter
     this.subtitle,
     // ignore: unused_element_parameter
     this.enabled = true,
+    this.route,
   });
 
   final IconData icon;
   final String title;
   final String? subtitle;
   final bool enabled;
+  final String? route;
 }
 
 class _MenuItemTile extends StatelessWidget {
@@ -245,8 +144,11 @@ class _MenuItemTile extends StatelessWidget {
     final primary = Theme.of(context).colorScheme.primary;
     final disabled = !entry.enabled;
 
+    final route = entry.route;
     return InkWell(
-      onTap: disabled ? null : () {},
+      onTap: disabled
+          ? null
+          : (route == null ? () {} : () => context.push(route)),
       hoverColor: const Color(0xFFF9FAFB),
       splashColor: primary.withValues(alpha: 0.08),
       highlightColor: primary.withValues(alpha: 0.04),
