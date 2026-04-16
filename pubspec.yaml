@@ -1,11 +1,14 @@
+# Web-only Flutter app.
+
 name: qatest1
-description: "magic admin"
+description: "magic admin — admin panel web client."
 publish_to: 'none'
 
 version: 1.0.0+1
 
 environment:
   sdk: ^3.10.4
+  flutter: "3.38.5"
 
 dependencies:
   flutter:
