@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:go_router/go_router.dart';
 
 import '../app/service/auth_service.dart';
 import '../theme/app_theme.dart';
@@ -15,8 +14,7 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    final router = GoRouter.of(context);
-    final canPop = router.canPop();
+    final canPop = Navigator.of(context).canPop();
 
     return AppBar(
       backgroundColor: Colors.white,
@@ -31,7 +29,7 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
           ? IconButton(
               tooltip: 'Back',
               icon: const Icon(Icons.arrow_back, color: AppTheme.mutedText),
-              onPressed: router.pop,
+              onPressed: () => Navigator.of(context).maybePop(),
             )
           : null,
       title: SvgPicture.asset(

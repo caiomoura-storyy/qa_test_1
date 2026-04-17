@@ -9,6 +9,7 @@ class AuthGuard {
   static const String twoFactorRoute = '/2fa';
   static const String noAccessRoute = '/no-access';
   static const String homeRoute = '/home';
+  static const String myAccountRoute = '/my-account';
 
   static const Set<String> _authFlowRoutes = {
     loginRoute,

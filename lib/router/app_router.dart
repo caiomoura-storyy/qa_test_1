@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../app/service/auth_service.dart';
 import '../pages/home/home_page.dart';
 import '../pages/login/login_page.dart';
+import '../pages/my_account/my_account_page.dart';
 import '../pages/no_access/no_access_page.dart';
 import '../pages/not_found/not_found_page.dart';
 import '../pages/two_factor/two_factor_page.dart';
@@ -32,6 +33,10 @@ final appRouter = GoRouter(
     GoRoute(
       path: AuthGuard.homeRoute,
       pageBuilder: (context, state) => _page(const HomePage()),
+    ),
+    GoRoute(
+      path: AuthGuard.myAccountRoute,
+      pageBuilder: (context, state) => _page(const MyAccountPage()),
     ),
   ],
 );

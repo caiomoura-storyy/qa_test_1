@@ -51,7 +51,11 @@ class _HomeMenuCard extends StatelessWidget {
   const _HomeMenuCard();
 
   static const _entries = <_MenuEntry>[
-    _MenuEntry(icon: Icons.manage_accounts_outlined, title: 'My Account'),
+    _MenuEntry(
+      icon: Icons.manage_accounts_outlined,
+      title: 'My Account',
+      route: '/my-account',
+    ),
     _MenuEntry(
       icon: Icons.hub_outlined,
       title: 'My Pod',
