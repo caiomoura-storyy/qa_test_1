@@ -33,7 +33,7 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
             )
           : null,
       title: SvgPicture.asset(
-        'assets/svg/storyy|magic_admin.svg',
+        'assets/svg/storyy-magic_admin.svg',
         height: 36.0,
         semanticsLabel: 'magic admin',
       ),
